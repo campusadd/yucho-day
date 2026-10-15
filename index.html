@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="ゆうちょ銀行の人事担当者と話せる、Campus Add限定の座談会「ゆうちょの日」の日程と参加申込">
+<title>ゆうちょの日</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=M+PLUS+2:wght@400;500;700;800&display=swap">
+<style>
+/* 明るいグリーン（ゆうちょ銀行のコーポレートカラーを意識）＋ Campus Add ロゴの黄色。1列で、上から「どんな会か → 日程 → 概要 → 申込」 */
+:root{
+  --bg:#f6fbf7; --surface:#ffffff; --soft:#e8f5ec; --ink:#2f3a34; --muted:#66756c; --line:#d8eadf;
+  --accent:#007a43; --accent-ink:#ffffff; --mark:#f2b705; --mark-soft:#fff3c7; --mark-ink:#7a5600;
+  --hero:linear-gradient(160deg,#dff3e7 0%,#f3fbf6 55%,#fff8dc 100%);
+  --wait:#5f8f86; --wait-soft:#e3f0ec; --danger:#c62828; --line-green:#06c755;
+  --f-body:"M PLUS 2","Hiragino Sans","Yu Gothic UI","Meiryo",sans-serif;
+  --f-num:"Outfit","M PLUS 2",system-ui,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#101814; --surface:#17221c; --soft:#1f2e26; --ink:#eef4f0; --muted:#a3b3a9; --line:#2b3b32;
+  --accent:#5ccf8f; --accent-ink:#0b1f14; --mark:#f5c430; --mark-soft:#3a3016; --mark-ink:#f8dc8a;
+  --hero:linear-gradient(160deg,#173225 0%,#17221c 60%,#2a2814 100%);
+  --wait:#8fc4b9; --wait-soft:#1e3330; --danger:#ff8a80; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#101814; --surface:#17221c; --soft:#1f2e26; --ink:#eef4f0; --muted:#a3b3a9; --line:#2b3b32;
+  --accent:#5ccf8f; --accent-ink:#0b1f14; --mark:#f5c430; --mark-soft:#3a3016; --mark-ink:#f8dc8a;
+  --hero:linear-gradient(160deg,#173225 0%,#17221c 60%,#2a2814 100%);
+  --wait:#8fc4b9; --wait-soft:#1e3330; --danger:#ff8a80; color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);background:var(--bg);scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;font-weight:500;line-height:1.75;letter-spacing:.02em;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding-inline:16px;padding-block:20px 64px}
+h1,h2,h3{text-wrap:balance;margin:0;line-height:1.3}
+a{color:var(--accent)}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--mark);outline-offset:2px;border-radius:6px}
+.eyebrow{font-size:12px;letter-spacing:.12em;color:var(--muted);font-weight:700}
+
+.hero{display:grid;gap:14px;padding:28px 16px 24px;justify-items:center;text-align:center;background:var(--hero);border:1px solid var(--line);border-radius:20px}
+.brand{width:200px;height:34px;overflow:hidden;background:#fff;border-radius:8px;box-sizing:content-box;padding:8px 12px}
+.brand img{display:block;width:247px;height:81px;max-width:none;margin:-23px 0 0 -23px}
+.hero h1{font-weight:800;font-size:clamp(38px,11vw,60px);letter-spacing:.08em}
+.hero h1 small{display:block;font-size:15px;letter-spacing:.12em;color:var(--accent);margin-bottom:8px}
+/* ロゴの黄色い星を見出しの飾りに */
+.hero h1 small::before{content:"";display:inline-block;width:.9em;height:.9em;margin-right:.45em;vertical-align:-.1em;background:var(--mark);
+  clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%)}
+.hero p{margin:0 auto;max-width:32em;color:var(--muted)}
+.points{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:6px 0 0;padding:0;list-style:none;width:100%}
+.points li{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 8px;font-size:13px;font-weight:700;line-height:1.45}
+.points li b{display:block;font-family:var(--f-num);font-size:20px;color:var(--accent);line-height:1.2}
+.cta{display:flex;justify-content:center;align-items:center;gap:8px;width:100%;border:none;border-radius:12px;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:16px;padding:15px 18px;cursor:pointer;text-decoration:none}
+.cta:hover{filter:brightness(1.06)}
+.cta.ghost{background:transparent;color:var(--accent);border:1.5px solid var(--accent)}
+.cta.line{background:var(--line-green);color:#fff}
+.cta[disabled]{opacity:.6;cursor:wait}
+.hero .cta{max-width:340px;margin-top:4px}
+
+.notice{margin-top:14px;background:var(--mark-soft);color:var(--mark-ink);border-radius:10px;padding:10px 14px;font-size:13px}
+section{margin-top:34px}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0 0 12px}
+.sec-h h2{font-size:19px}
+.sec-h .count{font-family:var(--f-num);font-size:12px;color:var(--muted)}
+.topics{display:flex;flex-wrap:wrap;gap:8px}
+.topics span{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:14px;font-weight:700}
+.lead{margin:10px 0 0;font-size:14px;color:var(--muted)}
+
+/* 日程：日付の札＋その日の3コマ */
+.days{display:grid;gap:10px}
+.day{display:grid;grid-template-columns:76px 1fr;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.day .date{display:grid;place-content:center;text-align:center;background:var(--soft);border-right:1px dashed var(--line);padding:10px 4px;font-family:var(--f-num)}
+.date .m{font-size:11px;color:var(--muted);letter-spacing:.06em}
+.date .d{font-variant-numeric:tabular-nums;font-size:26px;font-weight:600;line-height:1.1}
+.date .w{font-size:11px;color:var(--muted);font-family:var(--f-body);font-weight:700}
+.slots{display:grid;gap:6px;padding:10px 12px}
+.slot{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--line);border-radius:10px;padding:8px 12px;background:var(--bg);text-align:left;width:100%;cursor:pointer}
+.slot .t{font-family:var(--f-num);font-variant-numeric:tabular-nums;font-size:16px;font-weight:600}
+.slot:hover:not([disabled]){border-color:var(--accent)}
+.slot[disabled]{cursor:default;opacity:.75}
+.slot[disabled] .t{color:var(--muted)}
+.pill{font-size:11px;font-weight:700;border-radius:999px;padding:2px 10px;letter-spacing:.03em;white-space:nowrap}
+.pill.ok{background:var(--mark-soft);color:var(--mark-ink)}
+.pill.full{background:var(--soft);color:var(--muted)}
+.empty{background:var(--surface);border:1px dashed var(--line);border-radius:12px;padding:18px 16px;color:var(--muted);font-size:14px}
+
+.facts{display:grid;grid-template-columns:auto 1fr;gap:8px 16px;margin:0;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;font-size:14px}
+.facts dt{color:var(--muted);font-size:12px;font-weight:700;padding-top:2px}
+.facts dd{margin:0;min-width:0;overflow-wrap:anywhere}
+.facts small{color:var(--muted);font-size:12px}
+/* 注意書きは押せるように見えないよう、枠のない箇条書きにする */
+.rules{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.rules li{position:relative;padding-left:22px;font-size:14px}
+.rules li::before{content:"";position:absolute;left:4px;top:.62em;width:8px;height:8px;border-radius:50%;background:var(--mark)}
+.target{background:var(--accent);color:var(--accent-ink);font-weight:800;font-size:15px;letter-spacing:.08em;border-radius:999px;padding:4px 18px}
+
+.office{margin:0;width:100%;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;text-align:left}
+.office img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+.office figcaption{padding:14px 16px;display:grid;gap:4px;font-size:14px;color:var(--muted)}
+.office figcaption b{font-size:17px;color:var(--ink)}
+.office .map{justify-self:start;margin-top:6px;font-size:13px;font-weight:700;color:var(--accent);border:1.5px solid var(--accent);border-radius:999px;padding:4px 14px;text-decoration:none}
+
+/* 申込フォーム */
+.qform{display:grid;gap:14px}
+.q{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:14px 16px;margin:0;min-width:0;display:grid;gap:10px}
+.q.bad{border-color:var(--danger)}
+.qt{font-weight:700;font-size:14px;white-space:pre-line;overflow-wrap:anywhere}
+.req,.opt{font-size:10px;font-weight:700;border-radius:4px;padding:1px 6px;margin-left:6px;vertical-align:2px;white-space:nowrap}
+.req{background:var(--mark-soft);color:var(--mark-ink)}
+.opt{background:var(--soft);color:var(--muted)}
+.qh{font-size:12px;color:var(--muted);margin:-4px 0 0;white-space:pre-line;overflow-wrap:anywhere}
+.qh.box{margin:0;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px;max-height:200px;overflow:auto}
+.qe{color:var(--danger);font-size:12px;font-weight:700;margin:0}
+.choices{display:flex;flex-wrap:wrap;gap:8px}
+.choices.stack{flex-direction:column}
+.choices label{position:relative;cursor:pointer}
+.choices.stack label{width:100%}
+.choices input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.choices span{display:block;border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:14px;background:var(--bg)}
+.choices input:checked+span{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:700}
+.choices input:focus-visible+span{outline:3px solid var(--mark);outline-offset:2px}
+.choices input:disabled+span{color:var(--muted);background:var(--soft);cursor:default;text-decoration:line-through}
+.choices input:disabled{cursor:default}
+.sgroup{display:grid;gap:6px}
+.sgroup b{font-size:13px}
+.qform input[type="text"],.qform textarea{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.qform textarea{min-height:110px;resize:vertical}
+.errbox{background:var(--surface);border:1.5px solid var(--danger);color:var(--danger);border-radius:12px;padding:12px 14px;font-size:13px;font-weight:700}
+.fallback{font-size:12px;color:var(--muted);text-align:center;margin:12px 0 0}
+.thanks{text-align:center;padding:24px 0;display:grid;gap:14px;justify-items:center}
+.thanks .big{font-weight:800;font-size:28px;color:var(--accent)}
+.thanks .picked{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 16px;font-weight:700}
+.thanks p{margin:0;color:var(--muted);font-size:14px}
+.thanks .cta{max-width:340px}
+footer{margin-top:40px;font-size:12px;color:var(--muted);text-align:center;display:grid;gap:4px}
+@media (max-width:480px){
+  .points li{font-size:12px;padding:8px 6px}
+  .day{grid-template-columns:64px 1fr}
+  .date .d{font-size:22px}
+  .slots{padding:8px 10px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <main id="v-home">
+    <header class="hero">
+      <div class="eyebrow">Campus Add 限定の定期座談会</div>
+      <div class="brand"><img src="campus-add-logo.png" alt="Campus Add" width="300" height="98"></div>
+      <h1><small>ゆうちょ銀行 人事担当者座談会</small>ゆうちょの日</h1>
+      <div class="target">28卒対象</div>
+      <p>ゆうちょ銀行の採用担当者と、直接話せる座談会です。<br>銀行の仕事や金融業界のこと、就活の進め方まで、気になることを聞いてみませんか。</p>
+      <ul class="points">
+        <li><b>1名</b>各回の定員</li>
+        <li><b>40分</b>1回の時間</li>
+        <li><b>選考外</b>選考とは関係なし</li>
+      </ul>
+      <a class="cta" href="#schedule">日程を見て申し込む</a>
+    </header>
+    <div class="notice" id="notice" hidden></div>
+
+    <section>
+      <div class="sec-h"><h2>こんなことを聞けます</h2></div>
+      <div class="topics"><span>銀行の仕事</span><span>金融業界のこと</span><span>投資信託</span><span>就職活動の進め方</span></div>
+      <p class="lead">金融や銀行に興味がなくても大丈夫です。選考とは関係ないので、気軽に参加してください。</p>
+    </section>
+
+    <section id="schedule">
+      <div class="sec-h"><h2>日程と空き状況</h2><span class="count" id="slotCount"></span></div>
+      <div class="days" id="days"></div>
+      <p class="lead">空いているコマを押すと、申込フォームにその日程が入ります。</p>
+    </section>
+
+    <section>
+      <div class="sec-h"><h2>開催概要</h2></div>
+      <dl class="facts">
+        <dt>対象</dt><dd>28卒の方</dd>
+        <dt>主催</dt><dd>株式会社ゆうちょ銀行</dd>
+        <dt>時間</dt><dd>1回40分（①15:00〜 ②15:40〜 ③16:20〜）</dd>
+        <dt>定員</dt><dd>各回1名</dd>
+        <dt>会場</dt><dd>Campus Add<br><small>札幌市中央区南1条東3丁目10-13 アイパスビル3F<br>地下鉄東西線「バスセンター前」駅 6番出口から徒歩2分</small></dd>
+        <dt>服装</dt><dd>私服でOK<br><small>就活イベントの前後に来館する場合は、スーツのままでも大丈夫です</small></dd>
+        <dt>持ち物</dt><dd>筆記用具・メモ帳</dd>
+      </dl>
+    </section>
+
+    <section>
+      <div class="sec-h"><h2>申し込む前に</h2></div>
+      <ul class="rules">
+        <li>申込は1人1日1コマまでです。複数の日程に参加したい方は、日程ごとに申込フォームから申し込んでください。</li>
+        <li>開始5分前までに会場へお越しください。</li>
+        <li>企業主催のイベントのため、当日のキャンセルはご遠慮ください。</li>
+      </ul>
+    </section>
+
+    <section>
+      <div class="sec-h"><h2>座談会の前後も Campus Add へ</h2></div>
+      <figure class="office">
+        <img src="campus-add-room.jpg" alt="Campus Add の室内。本棚の前にテーブル席とカラフルなスツールが並ぶ明るいスペース" width="1600" height="1067" loading="lazy">
+        <figcaption><b>就活の相談も、作業の場所としても使えます</b><span>座談会の前後で、Campus Addスタッフに就活の相談をしたり、席を使ってESづくりや企業研究などを進めたりできます。利用したい方は、申込フォームで選んでください。</span>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=%E6%9C%AD%E5%B9%8C%E5%B8%82%E4%B8%AD%E5%A4%AE%E5%8C%BA%E5%8D%971%E6%9D%A1%E6%9D%B13%E4%B8%81%E7%9B%AE10-13" target="_blank" rel="noopener">地図を開く</a></figcaption>
+      </figure>
+    </section>
+
+    <section id="apply">
+      <div class="sec-h"><h2>参加申込</h2><span class="count">所要時間 約3分</span></div>
+      <div id="aBody">
+        <form class="qform" id="aForm" novalidate></form>
+        <p class="fallback" id="aFallback"></p>
+      </div>
+      <div class="thanks" id="aThanks" hidden>
+        <div class="big">申込を受け付けました</div>
+        <div class="picked" id="aPicked"></div>
+        <p>Campus Addの公式LINEから、参加確定のご連絡をお送りします。<br>友だち追加がまだの方は、下のボタンから追加してください。</p>
+        <a class="cta line" id="aLine" target="_blank" rel="noopener">LINEで友だち追加</a>
+        <button class="cta ghost" type="button" id="aAgain">別の日程も見る</button>
+      </div>
+    </section>
+
+    <footer><span>日程は変更になる場合があります。最新情報はこのページで確認してください。</span><span>運営：Campus Add（株式会社エス・イー・ジャパン）</span></footer>
+  </main>
+</div>
+
+<script src="config.js"></script>
+<script>
+const CONFIG = Object.assign({sheetCsvUrl:"", formUrl:"", lineUrl:""}, window.YUCHO_CONFIG || {});
+// 管理表を読み込めなかったときだけ使う控えの日程
+const FALLBACK = [];
+["2026-11-09","2026-11-18","2026-11-25","2026-11-30"].forEach(d=>[["15:00","15:40"],["15:40","16:20"],["16:20","17:00"]].forEach(t=>FALLBACK.push({date:d,start:t[0],end:t[1],status:"受付中"})));
+// フォームの設定を読み込めなかったときに表示する質問（Googleフォームと同じ内容）
+const DEFAULT_ITEMS = [
+  {type:"TEXT",title:"氏名",required:true},
+  {type:"TEXT",title:"大学名",required:true},
+  {type:"TEXT",title:"学部・学科名",required:true},
+  {type:"MULTIPLE_CHOICE",title:"希望参加日",role:"slot",required:true,help:"1人1日1コマまで申し込めます。複数の日程に参加したい方は、日程ごとにこのフォームから申し込んでください。",choices:[]},
+  {type:"MULTIPLE_CHOICE",title:"このイベントを知ったきっかけ",required:true,other:true,choices:["Campus Addの公式LINE","Campus Addスタッフからの案内","Instagram","友人・先輩からの紹介","大学（キャリアセンター・ゼミなど）からの案内"]},
+  {type:"PARAGRAPH_TEXT",title:"参加して人事担当者に聞いてみたいこと"},
+  {type:"MULTIPLE_CHOICE",title:"座談会の前後に、Campus Addを利用しますか？",required:true,help:"Campus Addでは、スタッフに就活の相談をしたり、席を使ってESづくりや企業研究などの就活の作業をしたりできます。",choices:["スタッフに就活の相談をしたい","席を使って就活の作業をしたい","どちらも利用したい","今回は利用しない"]},
+  {type:"TEXT",title:"Campus Add公式LINEでの表示名",required:true,help:"参加確定のご連絡はLINEでお送りします。友だち追加がまだの方は、申込のあとに追加してください。"},
+  {type:"CHECKBOX",title:"個人情報の取り扱いについて",required:true,choices:["上記に同意する"],help:"株式会社エス・イー・ジャパン【Campus Add】（以下、当社）は、ご入力いただいた個人情報を次の目的で利用します。\n1. 本座談会の運営と、参加に関するご連絡\n2. 主催企業（株式会社ゆうちょ銀行）への参加者情報の共有（氏名・大学名・学部学科名・聞いてみたいこと）\n3. 当社（Campus Add）からの、就職活動に関する講座・イベント・個別相談のご案内\n上記以外の目的での利用および第三者への提供はいたしません。\n\n【個人情報についてのお問い合わせ窓口】\n株式会社エス・イー・ジャパン\nTEL：011-577-1396\nMAIL：info@sejapan.jp\nLINE：https://lin.ee/wpTDw7N\nプライバシーポリシー：https://www.campus-add.com/privacy-policy"}
+];
+const CACHE_KEY = "yucho.slots.v1";
+const WD = ["日","月","火","水","木","金","土"];
+
+// ---- 管理表の読み込み ----
+function parseCsv(text){
+  const rows=[]; let row=[], cell="", q=false;
+  for(let i=0;i<text.length;i++){
+    const c=text[i];
+    if(q){ if(c==='"'){ if(text[i+1]==='"'){cell+='"';i++;} else q=false; } else cell+=c; }
+    else if(c==='"') q=true;
+    else if(c===','){ row.push(cell); cell=""; }
+    else if(c==='\n'||c==='\r'){ if(c==='\r'&&text[i+1]==='\n') i++; row.push(cell); rows.push(row); row=[]; cell=""; }
+    else cell+=c;
+  }
+  if(cell!==""||row.length){ row.push(cell); rows.push(row); }
+  return rows.filter(r=>r.some(v=>v.trim()!==""));
+}
+const z2h = s => String(s||"").replace(/[０-９：／]/g,c=>String.fromCharCode(c.charCodeAt(0)-0xFEE0));
+function normDate(v){ const m=z2h(v).trim().match(/^(\d{4})\s*[\/\-.年]\s*(\d{1,2})\s*[\/\-.月]\s*(\d{1,2})/); return m ? `${m[1]}-${m[2].padStart(2,"0")}-${m[3].padStart(2,"0")}` : null; }
+function normTime(v){ const m=z2h(v).trim().match(/^(\d{1,2}):(\d{2})/); return m ? `${Number(m[1])}:${m[2]}` : ""; }
+function parts(date){ const [y,m,d]=date.split("-").map(Number); return {y,m,d,w:WD[new Date(y,m-1,d).getDay()]}; }
+// 管理用スクリプトの slotLabel_ と同じ形（Googleフォームの選択肢と一致させるため）
+function slotLabel(s){ const p=parts(s.date); return `${p.m}月${p.d}日（${p.w}）${s.start}${s.end?"〜"+s.end:""}`; }
+const jstMs = (date,time) => { const [y,m,d]=date.split("-").map(Number); const [h,mi]=(time||"23:59").split(":").map(Number); return Date.UTC(y,m-1,d,h-9,mi); };
+function rowsToSlots(rows){
+  const head=rows[0].map(h=>h.trim()), get=(r,n)=>{ const i=head.indexOf(n); return i<0 ? "" : String(r[i]??"").trim(); };
+  if(head.indexOf("日付")<0) throw new Error("日付の列がありません");
+  const out=[];
+  rows.slice(1).forEach(r=>{
+    const date=normDate(get(r,"日付")), start=normTime(get(r,"開始"));
+    if(!date || !start || get(r,"非表示")) return;
+    const s={date, start, end:normTime(get(r,"終了")), status:get(r,"状態")||"受付中", deadline:get(r,"締切")};
+    s.label=get(r,"表示名")||slotLabel(s);
+    out.push(s);
+  });
+  return out;
+}
+function closeAt(s){
+  const m=z2h(s.deadline).match(/^(\d{4})\D+(\d{1,2})\D+(\d{1,2})(?:\s+(\d{1,2}):(\d{2}))?/);
+  return m ? jstMs(`${m[1]}-${m[2].padStart(2,"0")}-${m[3].padStart(2,"0")}`, m[4]?`${m[4]}:${m[5]}`:"23:59") : jstMs(s.date, s.start);
+}
+// コマの状態：締切を過ぎた → 締切、管理表で満席 → 満席、フォームの選択肢から消えている → 満席
+function stateOf(s){
+  if(Date.now() >= closeAt(s)) return "締切";
+  if(s.status==="満席" || s.status==="締切") return s.status;
+  if(SCHEMA && SCHEMA.slot && !SCHEMA.slot.choices.includes(s.label)) return "満席";
+  return "受付中";
+}
+
+// ---- 表示 ----
+let SLOTS = [], SCHEMA = null, SCHEMA_STATE = "loading";
+const $ = s => document.querySelector(s);
+const el = (tag, props={}, kids=[]) => { const n=document.createElement(tag); Object.assign(n, props); for(const k of [].concat(kids)) if(k!=null) n.append(k); return n; };
+const todayJst = () => new Date(Date.now()+9*3600e3).toISOString().slice(0,10);
+const upcoming = () => SLOTS.filter(s=>s.date>=todayJst()).sort((a,b)=>jstMs(a.date,a.start)-jstMs(b.date,b.start));
+function byDay(list){ const m=new Map(); list.forEach(s=>{ if(!m.has(s.date)) m.set(s.date,[]); m.get(s.date).push(s); }); return [...m.entries()]; }
+
+function renderDays(){
+  const box=$("#days"), list=upcoming();
+  const open=list.filter(s=>stateOf(s)==="受付中").length;
+  $("#slotCount").textContent = list.length ? `空き ${open}コマ ／ ${list.length}コマ` : "";
+  if(!list.length){ box.replaceChildren(el("div",{className:"empty",textContent:"次回の日程は準備中です。決まりしだい、このページとCampus Addの公式LINEでお知らせします。"})); return; }
+  box.replaceChildren(...byDay(list).map(([date,slots])=>{
+    const p=parts(date);
+    return el("div",{className:"day"},[
+      el("div",{className:"date"},[el("div",{className:"m",textContent:p.m+"月"}),el("div",{className:"d",textContent:p.d}),el("div",{className:"w",textContent:p.w+"曜"})]),
+      el("div",{className:"slots"}, slots.map(s=>{
+        const st=stateOf(s), ok=st==="受付中";
+        const b=el("button",{type:"button",className:"slot",disabled:!ok},[
+          el("span",{className:"t",textContent:s.start+(s.end?"〜"+s.end:"")}),
+          el("span",{className:"pill "+(ok?"ok":"full"),textContent:ok?"空きあり":st})
+        ]);
+        b.setAttribute("aria-label", s.label+" "+(ok?"空きあり":st));
+        if(ok) b.onclick=()=>pickSlot(s.label);
+        return b;
+      }))
+    ]);
+  }));
+}
+
+// ---- 申込フォーム（見た目はページ、送り先はGoogleフォーム） ----
+let ITEMS = [], sending = false;
+function formAction(){ return CONFIG.formUrl ? CONFIG.formUrl.replace(/\/viewform.*$/,"/formResponse") : ""; }
+function schemaUrl(){ return CONFIG.sheetCsvUrl ? CONFIG.sheetCsvUrl.replace(/([?&]sheet=)[^&]*/, "$1"+encodeURIComponent("フォーム設定")) : ""; }
+function parseSchema(rows){
+  const head=rows[0].map(h=>h.trim()), g=(r,n)=>String(r[head.indexOf(n)]??"").trim();
+  const j=v=>{ try{ const x=JSON.parse(v||"[]"); return Array.isArray(x)?x:[]; }catch(e){ return []; } };
+  const items=rows.slice(1).map(r=>({type:g(r,"種類"), title:g(r,"タイトル"), help:g(r,"説明"), required:!!g(r,"必須"),
+    entry:g(r,"entry").split(",")[0], choices:j(g(r,"選択肢")), other:!!g(r,"その他"), role:g(r,"役割")})).filter(i=>i.entry);
+  const slot=items.find(i=>i.role==="slot");
+  if(!slot) throw new Error("schema");
+  return {items, slot};
+}
+async function loadSchema(){
+  const t=await fetch(schemaUrl()+"&_="+Date.now(),{cache:"no-store"}).then(r=>{ if(!r.ok) throw new Error(r.status); return r.text(); });
+  return parseSchema(parseCsv(t));
+}
+
+function placeholder(title){
+  if(/氏名/.test(title)) return "例）北海 太郎";
+  if(/大学名/.test(title)) return "例）北海学園大学";
+  if(/学部/.test(title)) return "例）経済学部 経済学科";
+  if(/LINE/.test(title)) return "LINEに表示されている名前";
+  return "";
+}
+function qField(it, k){
+  const box=el("div",{className:"q",id:"f-"+k,role:"group"});
+  box.setAttribute("aria-labelledby","t-"+k);
+  box.append(el("div",{className:"qt",id:"t-"+k},[it.title, el("span",{className:it.required?"req":"opt",textContent:it.required?"必須":"任意"})]));
+  if(it.help) box.append(el("p",{className:"qh"+(it.help.length>140?" box":""),textContent:it.help}));
+  const opt=(type,v,i,disabled,text)=>{ const id=`${k}-${i}`; return el("label",{htmlFor:id},[el("input",{type,name:k,value:v,id,disabled:!!disabled}), el("span",{textContent:text||v})]); };
+  if(it.type==="TEXT"){
+    box.append(el("input",{type:"text",id:k,name:k,maxLength:200,placeholder:placeholder(it.title),autocomplete:/氏名/.test(it.title)?"name":"off"}));
+  }else if(it.type==="PARAGRAPH_TEXT"){
+    box.append(el("textarea",{id:k,name:k,maxLength:2000,placeholder:"例）銀行の仕事のやりがいを聞いてみたい"}));
+  }else if(it.role==="slot"){
+    const list=upcoming();
+    if(!list.length) box.append(el("p",{className:"qh",textContent:"現在、申込できる日程はありません。"}));
+    let i=0;
+    byDay(list).forEach(([date,slots])=>{
+      const p=parts(date);
+      box.append(el("div",{className:"sgroup"},[el("b",{textContent:`${p.m}月${p.d}日（${p.w}）`}),
+        el("div",{className:"choices"}, slots.map(s=>{ const st=stateOf(s); return opt("radio",s.label,i++,st!=="受付中",s.start+(s.end?"〜"+s.end:"")+(st!=="受付中"?"（"+st+"）":"")); }))]));
+    });
+  }else if(it.type==="MULTIPLE_CHOICE" || it.type==="CHECKBOX"){
+    const type=it.type==="CHECKBOX"?"checkbox":"radio";
+    const list=it.choices.map((c,i)=>opt(type,c,i));
+    if(it.other) list.push(opt(type,"__other_option__",it.choices.length,false,"その他"));
+    box.append(el("div",{className:"choices"+(it.choices.some(c=>c.length>8)?" stack":"")}, list));
+    if(it.other) box.append(el("input",{type:"text",id:k+"-other",maxLength:200,placeholder:"その他の内容",hidden:true}));
+  }
+  box.append(el("p",{className:"qe",hidden:true}));
+  return box;
+}
+function qValue(it, k){
+  const f=$("#aForm");
+  if(it.type==="TEXT"||it.type==="PARAGRAPH_TEXT"){ const n=f.querySelector("#"+k); return n ? n.value.trim() : ""; }
+  if(it.type==="CHECKBOX") return [...f.querySelectorAll(`input[name="${k}"]:checked`)].map(n=>n.value);
+  const n=f.querySelector(`input[name="${k}"]:checked`); return n ? n.value : "";
+}
+const otherText = k => { const n=$("#"+k+"-other"); return n ? n.value.trim() : ""; };
+function checkItem(it, k){
+  const box=$("#f-"+k), err=box.querySelector(".qe"), v=qValue(it,k);
+  let msg="";
+  if(it.required && (Array.isArray(v) ? !v.length : !v)) msg = it.role==="slot" ? "参加したい日程を選んでください。" : it.type==="TEXT"||it.type==="PARAGRAPH_TEXT" ? "入力してください。" : "選んでください。";
+  else if(v==="__other_option__" && !otherText(k)) msg="「その他」の内容を入力してください。";
+  err.textContent=msg; err.hidden=!msg; box.classList.toggle("bad",!!msg);
+  return !msg;
+}
+function renderForm(){
+  const keep={}; // 書きかけの内容を残す
+  ITEMS.forEach((it,i)=>{ const k="q"+i; keep[it.title]=[qValue(it,k), otherText(k)]; });
+  ITEMS = SCHEMA ? SCHEMA.items : DEFAULT_ITEMS;
+  const f=$("#aForm");
+  f.replaceChildren(...ITEMS.map((it,i)=>qField(it,"q"+i)));
+  f.append(el("div",{className:"errbox",id:"aErr",hidden:true}));
+  f.append(el("button",{type:"submit",className:"cta",id:"aSend",textContent:"申し込む"}));
+  ITEMS.forEach((it,i)=>{
+    const k="q"+i, prev=keep[it.title]; if(!prev) return;
+    const [v,o]=prev;
+    if(it.type==="TEXT"||it.type==="PARAGRAPH_TEXT"){ const n=f.querySelector("#"+k); if(n) n.value=v; }
+    else [].concat(v).forEach(x=>{ const n=[...f.querySelectorAll(`input[name="${k}"]`)].find(n=>n.value===x && !n.disabled); if(n) n.checked=true; });
+    const on=$("#"+k+"-other"); if(on){ on.value=o; on.hidden=v!=="__other_option__"; }
+  });
+  const fb=$("#aFallback");
+  fb.replaceChildren(...(CONFIG.formUrl?["うまく送信できない場合は、", el("a",{href:CONFIG.formUrl,target:"_blank",rel:"noopener",textContent:"Googleフォーム"}), "から申し込んでください。"]:[]));
+}
+function pickSlot(label){
+  const i=ITEMS.findIndex(it=>it.role==="slot"); if(i<0) return;
+  const n=[...document.querySelectorAll(`input[name="q${i}"]`)].find(n=>n.value===label);
+  if(n && !n.disabled){ n.checked=true; checkItem(ITEMS[i],"q"+i); }
+  $("#apply").scrollIntoView({behavior:"smooth",block:"start"});
+}
+$("#aForm").addEventListener("change", e=>{
+  const box=e.target.closest(".q"); if(!box) return;
+  const k=box.id.slice(2), it=ITEMS[Number(k.slice(1))];
+  const on=$("#"+k+"-other"); if(on){ on.hidden=qValue(it,k)!=="__other_option__"; if(!on.hidden && e.target.type==="radio") on.focus(); }
+  if(box.classList.contains("bad")) checkItem(it,k);
+});
+function showErr(t){ const er=$("#aErr"); er.textContent=t; er.hidden=!t; if(t) er.scrollIntoView({behavior:"smooth",block:"center"}); }
+$("#aForm").addEventListener("submit", async e=>{
+  e.preventDefault();
+  if(sending) return;
+  const bad=ITEMS.map((it,i)=>checkItem(it,"q"+i)?-1:i).filter(i=>i>=0);
+  if(bad.length){ $("#f-q"+bad[0]).scrollIntoView({behavior:"smooth",block:"center"}); return; }
+  if(!SCHEMA || !formAction()){ showErr("申込の準備中のため、まだ送信できません。お手数ですが、Campus Addの公式LINEからお申し込みください。"); return; }
+
+  const si=ITEMS.findIndex(it=>it.role==="slot"), slot=qValue(ITEMS[si],"q"+si);
+  const btn=$("#aSend"); sending=true; btn.disabled=true; btn.textContent="送信しています…"; showErr("");
+  try{
+    // 送る直前に空きを確かめる（ほかの人が先に申し込んでいたら止める）
+    try{ SCHEMA=await loadSchema(); }catch(x){ /* 確認できないときはそのまま送る */ }
+    if(!SCHEMA.slot.choices.includes(slot)){
+      renderDays(); renderForm();
+      showErr("選んだ日程は、ちょうど満席になりました。お手数ですが、別の日程を選んでください。");
+      return;
+    }
+    const p=new URLSearchParams();
+    ITEMS.forEach((it,i)=>{
+      const k="q"+i, v=qValue(it,k);
+      [].concat(v).forEach(x=>{ if(x) p.append("entry."+it.entry, x); });
+      if(v==="__other_option__") p.append("entry."+it.entry+".other_option_response", otherText(k));
+    });
+    p.append("fvv","1"); p.append("pageHistory","0");
+    await fetch(formAction(),{method:"POST",mode:"no-cors",body:p});
+    $("#aPicked").textContent=slot;
+    $("#aForm").reset(); ITEMS=[]; renderForm();
+    $("#aBody").hidden=true; $("#aThanks").hidden=false;
+    $("#apply").scrollIntoView({block:"start"});
+    refreshSlots();
+  }catch(x){
+    showErr("送信できませんでした。電波の良いところで、もう一度「申し込む」を押してください。続けて失敗する場合は、下のGoogleフォームから申し込んでください。");
+  }finally{
+    sending=false; btn.disabled=false; btn.textContent="申し込む";
+  }
+});
+$("#aAgain").onclick=()=>{ $("#aThanks").hidden=true; $("#aBody").hidden=false; $("#schedule").scrollIntoView({behavior:"smooth",block:"start"}); };
+if(CONFIG.lineUrl) $("#aLine").href=CONFIG.lineUrl; else $("#aLine").hidden=true;
+
+// ---- 起動：前回読み込んだ日程 → 最新の管理表 ----
+function notice(t){ const n=$("#notice"); n.textContent=t||""; n.hidden=!t; }
+function refreshSlots(){
+  if(!CONFIG.sheetCsvUrl) return Promise.resolve();
+  const url=CONFIG.sheetCsvUrl+(CONFIG.sheetCsvUrl.includes("?")?"&":"?")+"_="+Date.now();
+  return fetch(url,{cache:"no-store"}).then(r=>{ if(!r.ok) throw new Error(r.status); return r.text(); }).then(t=>{
+    const rows=parseCsv(t); if(!rows.length) throw new Error("empty");
+    SLOTS=rowsToSlots(rows);
+    try{ localStorage.setItem(CACHE_KEY, JSON.stringify({slots:SLOTS, at:Date.now()})); }catch(e){}
+    notice(""); renderDays(); renderForm();
+  }).catch(()=>{ notice("最新の空き状況を読み込めませんでした。表示が古い可能性があります。しばらくしてからページを開き直してください。"); });
+}
+(function start(){
+  let cached=null; try{ cached=JSON.parse(localStorage.getItem(CACHE_KEY)||"null"); }catch(e){}
+  SLOTS = (cached && Array.isArray(cached.slots) ? cached.slots : FALLBACK).map(s=>({...s, label:s.label||slotLabel(s)}));
+  renderDays(); renderForm();
+  if(!CONFIG.sheetCsvUrl){ SCHEMA_STATE="failed"; return; }
+  loadSchema().then(sc=>{ SCHEMA=sc; SCHEMA_STATE="ready"; }).catch(()=>{ SCHEMA=null; SCHEMA_STATE="failed"; }).finally(()=>{ renderDays(); renderForm(); });
+  refreshSlots();
+})();
+</script>
+</body>
+</html>
