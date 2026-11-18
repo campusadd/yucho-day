@@ -92,6 +92,18 @@ section{margin-top:34px}
 .pill.soldout{background:var(--danger);color:#fff}
 .slot.soldout{opacity:1;border-color:var(--danger-soft);background:var(--danger-soft)}
 .choices label.soldout input:disabled+span{color:var(--danger);background:var(--danger-soft);border-color:var(--danger-soft);text-decoration:none}
+/* 日程（見るだけの表） */
+#days.sched{display:grid;gap:0;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.srow{display:grid;grid-template-columns:86px 1fr;align-items:center;gap:10px;padding:12px 14px;border-top:1px dashed var(--line)}
+.srow:first-child{border-top:none}
+.sdate b{font-family:var(--f-num);font-size:20px;font-weight:600;color:var(--ink)}
+.sdate span{font-size:12px;color:var(--muted);font-weight:700}
+.stimes{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 14px}
+.stimes li{display:flex;align-items:center;gap:5px;font-family:var(--f-num);font-size:15px;font-weight:600}
+.stimes .mk{font-family:var(--f-body);font-size:12px;font-weight:800;color:var(--accent)}
+.stimes li.ng{color:var(--muted)}
+.stimes li.ng .mk{color:var(--danger)}
+.slegend{margin:8px 0 0;font-size:12px;color:var(--muted)}
 .applybox{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px 18px;display:grid;gap:12px;justify-items:center;text-align:center}
 .applybox p{margin:0;font-size:14px}
 .applybox .small{font-size:13px;color:var(--muted)}
@@ -185,7 +197,8 @@ footer{margin-top:40px;font-size:12px;color:var(--muted);text-align:center;displ
 
     <section id="schedule">
       <div class="sec-h"><h2>日程と空き状況</h2><span class="count" id="slotCount"></span></div>
-      <div class="days" id="days"></div>
+      <div class="days sched" id="days"></div>
+      <p class="slegend">○＝空きあり（各回40分・定員1名）</p>
       <p class="lead">参加したい日程は、申込画面で選べます。</p>
       <a class="cta line big" id="go1" href="#" style="margin:14px auto 0;max-width:360px">LINEで申し込む</a>
     </section>
@@ -251,12 +264,11 @@ function render(slots){
   const days=new Map(); slots.forEach(s=>{ if(!days.has(s.date)) days.set(s.date,[]); days.get(s.date).push(s); });
   box.replaceChildren(...[...days.entries()].map(([date,list])=>{
     const [y,m,d]=date.split("/").map(Number), w=WD[new Date(y,m-1,d).getDay()];
-    return el("div",{className:"day"},[
-      el("div",{className:"date"},[el("div",{className:"m",textContent:m+"月"}),el("div",{className:"d",textContent:d}),el("div",{className:"w",textContent:w+"曜"})]),
-      el("div",{className:"slots"}, list.map(s=>{
-        const st = s.closed ? "締切" : s.left<=0 ? "満席" : "受付中", ok = st==="受付中";
-        const kids=[el("span",{className:"t",textContent:s.start+(s.end?"〜"+s.end:"")}), el("span",{className:"pill "+(ok?"ok":st==="満席"?"soldout":"full"),textContent:ok?"空きあり":st})];
-        return el("div",{className:"slot"+(st==="満席"?" soldout":""),style:"cursor:default"+(ok?"":";opacity:.75")},kids);
+    return el("div",{className:"srow"},[
+      el("div",{className:"sdate"},[el("b",{textContent:m+"/"+d}),el("span",{textContent:"（"+w+"）"})]),
+      el("ul",{className:"stimes"}, list.map(s=>{
+        const st = s.closed ? "締切" : s.left<=0 ? "満席" : "空き", ok = st==="空き";
+        return el("li",{className:ok?"ok":"ng"},[el("span",{className:"tt",textContent:s.start}), el("span",{className:"mk",textContent:ok?"○":st})]);
       }))
     ]);
   }));
