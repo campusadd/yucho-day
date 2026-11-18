@@ -154,6 +154,8 @@ footer{margin-top:40px;font-size:12px;color:var(--muted);text-align:center;displ
   .slots{padding:8px 10px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
+.opening{pointer-events:none;opacity:.7}
+.openmsg{position:fixed;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:50;max-width:480px;margin:0 auto;background:#26303d;color:#fff;border-radius:14px;padding:12px 16px;font-size:14px;font-weight:700;text-align:center;box-shadow:0 10px 30px -10px rgba(0,0,0,.4)}
 </style>
 </head>
 <body>
@@ -264,6 +266,16 @@ fetch(API).then(r=>r.json()).then(d=>{
   const ev=(d.events||[]).find(e=>e.id===EVENT_ID);
   render(ev ? ev.slots : []);
 }).catch(()=>{ $("#days").replaceChildren(el("div",{className:"empty",textContent:"空き状況を読み込めませんでした。下の「LINEで申し込む」から日程を確認できます。"})); });
+</script>
+<script>
+// 押したらすぐ反応する（LINEの申込画面が開くまで数秒かかるため）
+document.addEventListener("click", e=>{
+  const a=e.target.closest('a[href*="liff.line.me"]'); if(!a) return;
+  a.classList.add("opening");
+  let m=document.querySelector(".openmsg"); if(!m){ m=document.createElement("div"); m.className="openmsg"; m.setAttribute("role","status"); document.body.append(m); }
+  m.textContent="LINEで申込画面を開いています。そのまま少しお待ちください…"; m.hidden=false;
+  setTimeout(()=>{ a.classList.remove("opening"); m.hidden=true; }, 8000);
+});
 </script>
 </body>
 </html>
