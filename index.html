@@ -92,6 +92,10 @@ section{margin-top:34px}
 .pill.soldout{background:var(--danger);color:#fff}
 .slot.soldout{opacity:1;border-color:var(--danger-soft);background:var(--danger-soft)}
 .choices label.soldout input:disabled+span{color:var(--danger);background:var(--danger-soft);border-color:var(--danger-soft);text-decoration:none}
+.applybox{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px 18px;display:grid;gap:12px;justify-items:center;text-align:center}
+.applybox p{margin:0;font-size:14px}
+.applybox .small{font-size:13px;color:var(--muted)}
+.cta.big{max-width:360px;font-size:17px;padding:17px 18px}
 .empty{background:var(--surface);border:1px dashed var(--line);border-radius:12px;padding:18px 16px;color:var(--muted);font-size:14px}
 
 .facts{display:grid;grid-template-columns:auto 1fr;gap:8px 16px;margin:0;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;font-size:14px}
@@ -180,7 +184,7 @@ footer{margin-top:40px;font-size:12px;color:var(--muted);text-align:center;displ
     <section id="schedule">
       <div class="sec-h"><h2>日程と空き状況</h2><span class="count" id="slotCount"></span></div>
       <div class="days" id="days"></div>
-      <p class="lead">空いているコマを押すと、申込フォームにその日程が入ります。</p>
+      <p class="lead">空いているコマを押すと、LINEで申込画面が開きます。</p>
     </section>
 
     <section>
@@ -215,17 +219,11 @@ footer{margin-top:40px;font-size:12px;color:var(--muted);text-align:center;displ
     </section>
 
     <section id="apply">
-      <div class="sec-h"><h2>参加申込フォーム</h2></div>
-      <div id="aBody">
-        <form class="qform" id="aForm" novalidate></form>
-        <p class="fallback" id="aFallback"></p>
-      </div>
-      <div class="thanks" id="aThanks" hidden>
-        <div class="big">申込を受け付けました</div>
-        <div class="picked" id="aPicked"></div>
-        <p>Campus Addの公式LINEから、参加確定のご連絡をお送りします。<br>友だち追加がまだの方は、下のボタンから追加してください。<br>キャンセルや日程の変更も、LINEでご連絡ください。</p>
-        <a class="cta line" id="aLine" target="_blank" rel="noopener">LINEで友だち追加</a>
-        <button class="cta ghost" type="button" id="aAgain">別の日程も見る</button>
+      <div class="sec-h"><h2>申し込む</h2></div>
+      <div class="applybox">
+        <p>上の日程から参加したいコマを押すか、下のボタンから申し込んでください。</p>
+        <a class="cta line big" id="go2" href="#">LINEで申し込む</a>
+        <p class="small">Campus Addの公式LINEで申込画面が開きます。<br>来館予約で登録したことがある方は、名前などの入力はいりません。初めての方も、その場で登録できます（1分ほど）。</p>
       </div>
     </section>
 
@@ -233,263 +231,39 @@ footer{margin-top:40px;font-size:12px;color:var(--muted);text-align:center;displ
   </main>
 </div>
 
-<script src="config.js"></script>
 <script>
-const CONFIG = Object.assign({sheetCsvUrl:"", formUrl:"", lineUrl:""}, window.YUCHO_CONFIG || {});
-// 管理表を読み込めなかったときだけ使う控えの日程
-const FALLBACK = [];
-["2026-11-09","2026-11-18","2026-11-25","2026-11-30"].forEach(d=>[["15:00","15:40"],["15:40","16:20"],["16:20","17:00"]].forEach(t=>FALLBACK.push({date:d,start:t[0],end:t[1],status:"受付中"})));
-// フォームの設定を読み込めなかったときに表示する質問（Googleフォームと同じ内容）
-const DEFAULT_ITEMS = [
-  {type:"TEXT",title:"氏名",required:true},
-  {type:"TEXT",title:"大学名",required:true},
-  {type:"TEXT",title:"学部・学科名",required:true},
-  {type:"MULTIPLE_CHOICE",title:"希望参加日",role:"slot",required:true,help:"1人1日1コマまで申し込めます。複数の日程に参加したい方は、日程ごとにこのフォームから申し込んでください。",choices:[]},
-  {type:"MULTIPLE_CHOICE",title:"このイベントを知ったきっかけ",required:true,other:true,choices:["Campus Addの公式LINE","Campus Addスタッフからの案内","Instagram","友人・先輩からの紹介","大学（キャリアセンター・ゼミなど）からの案内"]},
-  {type:"PARAGRAPH_TEXT",title:"参加して人事担当者に聞いてみたいこと"},
-  {type:"MULTIPLE_CHOICE",title:"座談会の前後に、Campus Addを利用しますか？",required:true,help:"Campus Addでは、スタッフに就活の相談をしたり、空いている座席でES作成や企業研究などを進めたりできます。",choices:["スタッフに就活の相談をしたい","座席を利用したい","どちらも利用したい","今回は利用しない"]},
-  {type:"TEXT",title:"Campus Add公式LINEでの表示名",required:true,help:"参加確定のご連絡はLINEでお送りします。友だち追加がまだの方は、申込のあとに追加してください。"},
-  {type:"CHECKBOX",title:"個人情報の取り扱いについて",required:true,choices:["上記に同意する"],help:"株式会社エス・イー・ジャパン【Campus Add】（以下、当社）は、ご入力いただいた個人情報を次の目的で利用します。\n1. 本座談会の運営と、参加に関するご連絡\n2. 主催企業（株式会社ゆうちょ銀行）への参加者情報の共有（氏名・大学名・学部学科名・聞いてみたいこと）\n3. 当社（Campus Add）からの、就職活動に関する講座・イベント・個別相談のご案内\n上記以外の目的での利用および第三者への提供はいたしません。\n\n【個人情報についてのお問い合わせ窓口】\n株式会社エス・イー・ジャパン\nTEL：011-577-1396\nMAIL：info@sejapan.jp\nLINE：https://lin.ee/wpTDw7N\nプライバシーポリシー：https://www.campus-add.com/privacy-policy"}
-];
-const CACHE_KEY = "yucho.slots.v1";
-const WD = ["日","月","火","水","木","金","土"];
-
-// ---- 管理表の読み込み ----
-function parseCsv(text){
-  const rows=[]; let row=[], cell="", q=false;
-  for(let i=0;i<text.length;i++){
-    const c=text[i];
-    if(q){ if(c==='"'){ if(text[i+1]==='"'){cell+='"';i++;} else q=false; } else cell+=c; }
-    else if(c==='"') q=true;
-    else if(c===','){ row.push(cell); cell=""; }
-    else if(c==='\n'||c==='\r'){ if(c==='\r'&&text[i+1]==='\n') i++; row.push(cell); rows.push(row); row=[]; cell=""; }
-    else cell+=c;
-  }
-  if(cell!==""||row.length){ row.push(cell); rows.push(row); }
-  return rows.filter(r=>r.some(v=>v.trim()!==""));
-}
-const z2h = s => String(s||"").replace(/[０-９：／]/g,c=>String.fromCharCode(c.charCodeAt(0)-0xFEE0));
-function normDate(v){ const m=z2h(v).trim().match(/^(\d{4})\s*[\/\-.年]\s*(\d{1,2})\s*[\/\-.月]\s*(\d{1,2})/); return m ? `${m[1]}-${m[2].padStart(2,"0")}-${m[3].padStart(2,"0")}` : null; }
-function normTime(v){ const m=z2h(v).trim().match(/^(\d{1,2}):(\d{2})/); return m ? `${Number(m[1])}:${m[2]}` : ""; }
-function parts(date){ const [y,m,d]=date.split("-").map(Number); return {y,m,d,w:WD[new Date(y,m-1,d).getDay()]}; }
-// 管理用スクリプトの slotLabel_ と同じ形（Googleフォームの選択肢と一致させるため）
-function slotLabel(s){ const p=parts(s.date); return `${p.m}月${p.d}日（${p.w}）${s.start}${s.end?"〜"+s.end:""}`; }
-const jstMs = (date,time) => { const [y,m,d]=date.split("-").map(Number); const [h,mi]=(time||"23:59").split(":").map(Number); return Date.UTC(y,m-1,d,h-9,mi); };
-function rowsToSlots(rows){
-  const head=rows[0].map(h=>h.trim()), get=(r,n)=>{ const i=head.indexOf(n); return i<0 ? "" : String(r[i]??"").trim(); };
-  if(head.indexOf("日付")<0) throw new Error("日付の列がありません");
-  const out=[];
-  rows.slice(1).forEach(r=>{
-    const date=normDate(get(r,"日付")), start=normTime(get(r,"開始"));
-    if(!date || !start || get(r,"非表示")) return;
-    const s={date, start, end:normTime(get(r,"終了")), status:get(r,"状態")||"受付中", deadline:get(r,"締切")};
-    s.label=get(r,"表示名")||slotLabel(s);
-    out.push(s);
-  });
-  return out;
-}
-function closeAt(s){
-  const m=z2h(s.deadline).match(/^(\d{4})\D+(\d{1,2})\D+(\d{1,2})(?:\s+(\d{1,2}):(\d{2}))?/);
-  return m ? jstMs(`${m[1]}-${m[2].padStart(2,"0")}-${m[3].padStart(2,"0")}`, m[4]?`${m[4]}:${m[5]}`:"23:59") : jstMs(s.date, s.start);
-}
-// コマの状態：締切を過ぎた → 締切、管理表で満席 → 満席、フォームの選択肢から消えている → 満席
-function stateOf(s){
-  if(Date.now() >= closeAt(s)) return "締切";
-  if(s.status==="満席" || s.status==="締切") return s.status;
-  if(SCHEMA && SCHEMA.slot && !SCHEMA.slot.choices.includes(s.label)) return "満席";
-  return "受付中";
-}
-
-// ---- 表示 ----
-let SLOTS = [], SCHEMA = null, SCHEMA_STATE = "loading";
-const $ = s => document.querySelector(s);
+// イベント予約とのつなぎ（次の年は、イベント予約の管理表に日程を足すだけ。イベントIDを変えるときはここも直す）
+const EVENT_ID = "yucho2026";
+const API = "https://script.google.com/macros/s/AKfycbwfGR-XHbmPhWXb7qn69VTMTOnCXIw9aVLmc-3wRB4qzYQ-SifYMEBJWX186_W_6gM8_w/exec";
+const LIFF = "https://liff.line.me/2012298807-AJLjQIk8?e=" + EVENT_ID;
+const $ = q => document.querySelector(q);
 const el = (tag, props={}, kids=[]) => { const n=document.createElement(tag); Object.assign(n, props); for(const k of [].concat(kids)) if(k!=null) n.append(k); return n; };
-const todayJst = () => new Date(Date.now()+9*3600e3).toISOString().slice(0,10);
-const upcoming = () => SLOTS.filter(s=>s.date>=todayJst()).sort((a,b)=>jstMs(a.date,a.start)-jstMs(b.date,b.start));
-function byDay(list){ const m=new Map(); list.forEach(s=>{ if(!m.has(s.date)) m.set(s.date,[]); m.get(s.date).push(s); }); return [...m.entries()]; }
-
-function renderDays(){
-  const box=$("#days"), list=upcoming();
-  const open=list.filter(s=>stateOf(s)==="受付中").length;
-  $("#slotCount").textContent = list.length ? `空き ${open}コマ ／ ${list.length}コマ` : "";
-  if(!list.length){ box.replaceChildren(el("div",{className:"empty",textContent:"次回の日程は準備中です。決まりしだい、このページとCampus Addの公式LINEでお知らせします。"})); return; }
-  box.replaceChildren(...byDay(list).map(([date,slots])=>{
-    const p=parts(date);
+const WD = ["日","月","火","水","木","金","土"];
+$("#go2").href = LIFF;
+function render(slots){
+  const box=$("#days");
+  const open=slots.filter(s=>!s.closed && s.left>0).length;
+  $("#slotCount").textContent = slots.length ? `空き ${open}コマ ／ ${slots.length}コマ` : "";
+  if(!slots.length){ box.replaceChildren(el("div",{className:"empty",textContent:"次回の日程は準備中です。決まりしだい、このページとCampus Addの公式LINEでお知らせします。"})); return; }
+  const days=new Map(); slots.forEach(s=>{ if(!days.has(s.date)) days.set(s.date,[]); days.get(s.date).push(s); });
+  box.replaceChildren(...[...days.entries()].map(([date,list])=>{
+    const [y,m,d]=date.split("/").map(Number), w=WD[new Date(y,m-1,d).getDay()];
     return el("div",{className:"day"},[
-      el("div",{className:"date"},[el("div",{className:"m",textContent:p.m+"月"}),el("div",{className:"d",textContent:p.d}),el("div",{className:"w",textContent:p.w+"曜"})]),
-      el("div",{className:"slots"}, slots.map(s=>{
-        const st=stateOf(s), ok=st==="受付中";
-        const b=el("button",{type:"button",className:"slot"+(st==="満席"?" soldout":""),disabled:!ok},[
-          el("span",{className:"t",textContent:s.start+(s.end?"〜"+s.end:"")}),
-          el("span",{className:"pill "+(ok?"ok":st==="満席"?"soldout":"full"),textContent:ok?"空きあり":st})
-        ]);
-        b.setAttribute("aria-label", s.label+" "+(ok?"空きあり":st));
-        if(ok) b.onclick=()=>pickSlot(s.label);
-        return b;
+      el("div",{className:"date"},[el("div",{className:"m",textContent:m+"月"}),el("div",{className:"d",textContent:d}),el("div",{className:"w",textContent:w+"曜"})]),
+      el("div",{className:"slots"}, list.map(s=>{
+        const st = s.closed ? "締切" : s.left<=0 ? "満席" : "受付中", ok = st==="受付中";
+        const kids=[el("span",{className:"t",textContent:s.start+(s.end?"〜"+s.end:"")}), el("span",{className:"pill "+(ok?"ok":st==="満席"?"soldout":"full"),textContent:ok?"空きあり":st})];
+        return ok ? el("a",{className:"slot",href:LIFF+"&slot="+encodeURIComponent(s.key),style:"text-decoration:none;color:inherit"},kids)
+                  : el("div",{className:"slot"+(st==="満席"?" soldout":""),style:"cursor:default;opacity:.75"},kids);
       }))
     ]);
   }));
 }
-
-// ---- 申込フォーム（見た目はページ、送り先はGoogleフォーム） ----
-let ITEMS = [], sending = false;
-function formAction(){ return CONFIG.formUrl ? CONFIG.formUrl.replace(/\/viewform.*$/,"/formResponse") : ""; }
-function schemaUrl(){ return CONFIG.sheetCsvUrl ? CONFIG.sheetCsvUrl.replace(/([?&]sheet=)[^&]*/, "$1"+encodeURIComponent("フォーム設定")) : ""; }
-function parseSchema(rows){
-  const head=rows[0].map(h=>h.trim()), g=(r,n)=>String(r[head.indexOf(n)]??"").trim();
-  const j=v=>{ try{ const x=JSON.parse(v||"[]"); return Array.isArray(x)?x:[]; }catch(e){ return []; } };
-  const items=rows.slice(1).map(r=>({type:g(r,"種類"), title:g(r,"タイトル"), help:g(r,"説明"), required:!!g(r,"必須"),
-    entry:g(r,"entry").split(",")[0], choices:j(g(r,"選択肢")), other:!!g(r,"その他"), role:g(r,"役割")})).filter(i=>i.entry);
-  const slot=items.find(i=>i.role==="slot");
-  if(!slot) throw new Error("schema");
-  return {items, slot};
-}
-async function loadSchema(){
-  const t=await fetch(schemaUrl()+"&_="+Date.now(),{cache:"no-store"}).then(r=>{ if(!r.ok) throw new Error(r.status); return r.text(); });
-  return parseSchema(parseCsv(t));
-}
-
-function placeholder(title){
-  if(/氏名/.test(title)) return "例）北海 太郎";
-  if(/大学名/.test(title)) return "例）北海学園大学";
-  if(/学部/.test(title)) return "例）経済学部 経済学科";
-  if(/LINE/.test(title)) return "LINEに表示されている名前";
-  return "";
-}
-function qField(it, k){
-  const box=el("div",{className:"q",id:"f-"+k,role:"group"});
-  box.setAttribute("aria-labelledby","t-"+k);
-  box.append(el("div",{className:"qt",id:"t-"+k},[it.title, el("span",{className:it.required?"req":"opt",textContent:it.required?"必須":"任意"})]));
-  if(it.help) box.append(el("p",{className:"qh"+(it.help.length>140?" box":""),textContent:it.help}));
-  const opt=(type,v,i,disabled,text)=>{ const id=`${k}-${i}`; return el("label",{htmlFor:id},[el("input",{type,name:k,value:v,id,disabled:!!disabled}), el("span",{textContent:text||v})]); };
-  if(it.type==="TEXT"){
-    box.append(el("input",{type:"text",id:k,name:k,maxLength:200,placeholder:placeholder(it.title),autocomplete:/氏名/.test(it.title)?"name":"off"}));
-  }else if(it.type==="PARAGRAPH_TEXT"){
-    box.append(el("textarea",{id:k,name:k,maxLength:2000,placeholder:"例）銀行の仕事のやりがいを聞いてみたい"}));
-  }else if(it.role==="slot"){
-    const list=upcoming();
-    if(!list.length) box.append(el("p",{className:"qh",textContent:"現在、申込できる日程はありません。"}));
-    let i=0;
-    byDay(list).forEach(([date,slots])=>{
-      const p=parts(date);
-      box.append(el("div",{className:"sgroup"},[el("b",{textContent:`${p.m}月${p.d}日（${p.w}）`}),
-        el("div",{className:"choices"}, slots.map(s=>{ const st=stateOf(s); const o=opt("radio",s.label,i++,st!=="受付中",s.start+(s.end?"〜"+s.end:"")+(st!=="受付中"?"（"+st+"）":"")); if(st==="満席") o.classList.add("soldout"); return o; }))]));
-    });
-  }else if(it.type==="MULTIPLE_CHOICE" || it.type==="CHECKBOX"){
-    const type=it.type==="CHECKBOX"?"checkbox":"radio";
-    const list=it.choices.map((c,i)=>opt(type,c,i));
-    if(it.other) list.push(opt(type,"__other_option__",it.choices.length,false,"その他"));
-    box.append(el("div",{className:"choices"+(it.choices.some(c=>c.length>8)?" stack":"")}, list));
-    if(it.other) box.append(el("input",{type:"text",id:k+"-other",maxLength:200,placeholder:"その他の内容",hidden:true}));
-  }
-  box.append(el("p",{className:"qe",hidden:true}));
-  return box;
-}
-function qValue(it, k){
-  const f=$("#aForm");
-  if(it.type==="TEXT"||it.type==="PARAGRAPH_TEXT"){ const n=f.querySelector("#"+k); return n ? n.value.trim() : ""; }
-  if(it.type==="CHECKBOX") return [...f.querySelectorAll(`input[name="${k}"]:checked`)].map(n=>n.value);
-  const n=f.querySelector(`input[name="${k}"]:checked`); return n ? n.value : "";
-}
-const otherText = k => { const n=$("#"+k+"-other"); return n ? n.value.trim() : ""; };
-function checkItem(it, k){
-  const box=$("#f-"+k), err=box.querySelector(".qe"), v=qValue(it,k);
-  let msg="";
-  if(it.required && (Array.isArray(v) ? !v.length : !v)) msg = it.role==="slot" ? "参加したい日程を選んでください。" : it.type==="TEXT"||it.type==="PARAGRAPH_TEXT" ? "入力してください。" : "選んでください。";
-  else if(v==="__other_option__" && !otherText(k)) msg="「その他」の内容を入力してください。";
-  err.textContent=msg; err.hidden=!msg; box.classList.toggle("bad",!!msg);
-  return !msg;
-}
-function renderForm(){
-  const keep={}; // 書きかけの内容を残す
-  ITEMS.forEach((it,i)=>{ const k="q"+i; keep[it.title]=[qValue(it,k), otherText(k)]; });
-  ITEMS = SCHEMA ? SCHEMA.items : DEFAULT_ITEMS;
-  const f=$("#aForm");
-  f.replaceChildren(...ITEMS.map((it,i)=>qField(it,"q"+i)));
-  f.append(el("div",{className:"errbox",id:"aErr",hidden:true}));
-  f.append(el("button",{type:"submit",className:"cta",id:"aSend",textContent:"申し込む"}));
-  ITEMS.forEach((it,i)=>{
-    const k="q"+i, prev=keep[it.title]; if(!prev) return;
-    const [v,o]=prev;
-    if(it.type==="TEXT"||it.type==="PARAGRAPH_TEXT"){ const n=f.querySelector("#"+k); if(n) n.value=v; }
-    else [].concat(v).forEach(x=>{ const n=[...f.querySelectorAll(`input[name="${k}"]`)].find(n=>n.value===x && !n.disabled); if(n) n.checked=true; });
-    const on=$("#"+k+"-other"); if(on){ on.value=o; on.hidden=v!=="__other_option__"; }
-  });
-  const fb=$("#aFallback");
-  fb.replaceChildren(...(CONFIG.formUrl?["うまく送信できない場合は、", el("a",{href:CONFIG.formUrl,target:"_blank",rel:"noopener",textContent:"Googleフォーム"}), "から申し込んでください。"]:[]));
-}
-function pickSlot(label){
-  const i=ITEMS.findIndex(it=>it.role==="slot"); if(i<0) return;
-  const n=[...document.querySelectorAll(`input[name="q${i}"]`)].find(n=>n.value===label);
-  if(n && !n.disabled){ n.checked=true; checkItem(ITEMS[i],"q"+i); }
-  $("#apply").scrollIntoView({behavior:"smooth",block:"start"});
-}
-$("#aForm").addEventListener("change", e=>{
-  const box=e.target.closest(".q"); if(!box) return;
-  const k=box.id.slice(2), it=ITEMS[Number(k.slice(1))];
-  const on=$("#"+k+"-other"); if(on){ on.hidden=qValue(it,k)!=="__other_option__"; if(!on.hidden && e.target.type==="radio") on.focus(); }
-  if(box.classList.contains("bad")) checkItem(it,k);
-});
-function showErr(t){ const er=$("#aErr"); er.textContent=t; er.hidden=!t; if(t) er.scrollIntoView({behavior:"smooth",block:"center"}); }
-$("#aForm").addEventListener("submit", async e=>{
-  e.preventDefault();
-  if(sending) return;
-  const bad=ITEMS.map((it,i)=>checkItem(it,"q"+i)?-1:i).filter(i=>i>=0);
-  if(bad.length){ $("#f-q"+bad[0]).scrollIntoView({behavior:"smooth",block:"center"}); return; }
-  if(!SCHEMA || !formAction()){ showErr("申込の準備中のため、まだ送信できません。お手数ですが、Campus Addの公式LINEからお申し込みください。"); return; }
-
-  const si=ITEMS.findIndex(it=>it.role==="slot"), slot=qValue(ITEMS[si],"q"+si);
-  const btn=$("#aSend"); sending=true; btn.disabled=true; btn.textContent="送信しています…"; showErr("");
-  try{
-    // 送る直前に空きを確かめる（ほかの人が先に申し込んでいたら止める）
-    try{ SCHEMA=await loadSchema(); }catch(x){ /* 確認できないときはそのまま送る */ }
-    if(!SCHEMA.slot.choices.includes(slot)){
-      renderDays(); renderForm();
-      showErr("選んだ日程は、ちょうど満席になりました。お手数ですが、別の日程を選んでください。");
-      return;
-    }
-    const p=new URLSearchParams();
-    ITEMS.forEach((it,i)=>{
-      const k="q"+i, v=qValue(it,k);
-      [].concat(v).forEach(x=>{ if(x) p.append("entry."+it.entry, x); });
-      if(v==="__other_option__") p.append("entry."+it.entry+".other_option_response", otherText(k));
-    });
-    p.append("fvv","1"); p.append("pageHistory","0");
-    await fetch(formAction(),{method:"POST",mode:"no-cors",body:p});
-    $("#aPicked").textContent=slot;
-    $("#aForm").reset(); ITEMS=[]; renderForm();
-    $("#aBody").hidden=true; $("#aThanks").hidden=false;
-    $("#apply").scrollIntoView({block:"start"});
-    refreshSlots();
-  }catch(x){
-    showErr("送信できませんでした。電波の良いところで、もう一度「申し込む」を押してください。続けて失敗する場合は、下のGoogleフォームから申し込んでください。");
-  }finally{
-    sending=false; btn.disabled=false; btn.textContent="申し込む";
-  }
-});
-$("#aAgain").onclick=()=>{ $("#aThanks").hidden=true; $("#aBody").hidden=false; $("#schedule").scrollIntoView({behavior:"smooth",block:"start"}); };
-if(CONFIG.lineUrl) $("#aLine").href=CONFIG.lineUrl; else $("#aLine").hidden=true;
-
-// ---- 起動：前回読み込んだ日程 → 最新の管理表 ----
-function notice(t){ const n=$("#notice"); n.textContent=t||""; n.hidden=!t; }
-function refreshSlots(){
-  if(!CONFIG.sheetCsvUrl) return Promise.resolve();
-  const url=CONFIG.sheetCsvUrl+(CONFIG.sheetCsvUrl.includes("?")?"&":"?")+"_="+Date.now();
-  return fetch(url,{cache:"no-store"}).then(r=>{ if(!r.ok) throw new Error(r.status); return r.text(); }).then(t=>{
-    const rows=parseCsv(t); if(!rows.length) throw new Error("empty");
-    SLOTS=rowsToSlots(rows);
-    try{ localStorage.setItem(CACHE_KEY, JSON.stringify({slots:SLOTS, at:Date.now()})); }catch(e){}
-    notice(""); renderDays(); renderForm();
-  }).catch(()=>{ notice("最新の空き状況を読み込めませんでした。表示が古い可能性があります。しばらくしてからページを開き直してください。"); });
-}
-(function start(){
-  let cached=null; try{ cached=JSON.parse(localStorage.getItem(CACHE_KEY)||"null"); }catch(e){}
-  SLOTS = (cached && Array.isArray(cached.slots) ? cached.slots : FALLBACK).map(s=>({...s, label:s.label||slotLabel(s)}));
-  renderDays(); renderForm();
-  if(!CONFIG.sheetCsvUrl){ SCHEMA_STATE="failed"; return; }
-  loadSchema().then(sc=>{ SCHEMA=sc; SCHEMA_STATE="ready"; }).catch(()=>{ SCHEMA=null; SCHEMA_STATE="failed"; }).finally(()=>{ renderDays(); renderForm(); });
-  refreshSlots();
-})();
+$("#days").replaceChildren(el("div",{className:"empty",textContent:"空き状況を読み込んでいます…"}));
+fetch(API).then(r=>r.json()).then(d=>{
+  const ev=(d.events||[]).find(e=>e.id===EVENT_ID);
+  render(ev ? ev.slots : []);
+}).catch(()=>{ $("#days").replaceChildren(el("div",{className:"empty",textContent:"空き状況を読み込めませんでした。下の「LINEで申し込む」から日程を確認できます。"})); });
 </script>
 </body>
 </html>
