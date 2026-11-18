@@ -173,7 +173,7 @@ footer{margin-top:40px;font-size:12px;color:var(--muted);text-align:center;displ
         <li><b>40分</b>1回の時間</li>
         <li><b>選考外</b>選考とは関係なし</li>
       </ul>
-      <a class="cta" href="#schedule">日程を見て申し込む</a>
+      <a class="cta" href="#schedule">日程を見る</a>
     </header>
     <div class="notice" id="notice" hidden></div>
 
@@ -186,7 +186,8 @@ footer{margin-top:40px;font-size:12px;color:var(--muted);text-align:center;displ
     <section id="schedule">
       <div class="sec-h"><h2>日程と空き状況</h2><span class="count" id="slotCount"></span></div>
       <div class="days" id="days"></div>
-      <p class="lead">空いているコマを押すと、LINEで申込画面が開きます。</p>
+      <p class="lead">参加したい日程は、申込画面で選べます。</p>
+      <a class="cta line big" id="go1" href="#" style="margin:14px auto 0;max-width:360px">LINEで申し込む</a>
     </section>
 
     <section>
@@ -205,7 +206,7 @@ footer{margin-top:40px;font-size:12px;color:var(--muted);text-align:center;displ
     <section>
       <div class="sec-h"><h2>申し込む前に</h2></div>
       <ul class="rules">
-        <li>申込は1人1日1コマまでです。複数の日程に参加したい方は、日程ごとに申込フォームから申し込んでください。</li>
+        <li>申込は1人1日1コマまでです。複数の日程に参加したい方は、申込画面で日程ごとに申し込んでください。</li>
         <li>開始5分前までに会場へお越しください。</li>
         <li>キャンセルや日程の変更は、Campus Addの公式LINEでご連絡ください。企業主催のイベントのため、当日のキャンセルはご遠慮ください。</li>
       </ul>
@@ -223,7 +224,7 @@ footer{margin-top:40px;font-size:12px;color:var(--muted);text-align:center;displ
     <section id="apply">
       <div class="sec-h"><h2>申し込む</h2></div>
       <div class="applybox">
-        <p>上の日程から参加したいコマを押すか、下のボタンから申し込んでください。</p>
+        <p>参加したい日程は、申込画面で選べます。</p>
         <a class="cta line big" id="go2" href="#">LINEで申し込む</a>
         <p class="small">Campus Addの公式LINEで申込画面が開きます。<br>来館予約で登録したことがある方は、名前などの入力はいりません。初めての方も、その場で登録できます（1分ほど）。</p>
       </div>
@@ -241,7 +242,7 @@ const LIFF = "https://liff.line.me/2012298807-AJLjQIk8?e=" + EVENT_ID;
 const $ = q => document.querySelector(q);
 const el = (tag, props={}, kids=[]) => { const n=document.createElement(tag); Object.assign(n, props); for(const k of [].concat(kids)) if(k!=null) n.append(k); return n; };
 const WD = ["日","月","火","水","木","金","土"];
-$("#go2").href = LIFF;
+$("#go1").href = LIFF; $("#go2").href = LIFF;
 function render(slots){
   const box=$("#days");
   const open=slots.filter(s=>!s.closed && s.left>0).length;
@@ -255,8 +256,7 @@ function render(slots){
       el("div",{className:"slots"}, list.map(s=>{
         const st = s.closed ? "締切" : s.left<=0 ? "満席" : "受付中", ok = st==="受付中";
         const kids=[el("span",{className:"t",textContent:s.start+(s.end?"〜"+s.end:"")}), el("span",{className:"pill "+(ok?"ok":st==="満席"?"soldout":"full"),textContent:ok?"空きあり":st})];
-        return ok ? el("a",{className:"slot",href:LIFF+"&slot="+encodeURIComponent(s.key),style:"text-decoration:none;color:inherit"},kids)
-                  : el("div",{className:"slot"+(st==="満席"?" soldout":""),style:"cursor:default;opacity:.75"},kids);
+        return el("div",{className:"slot"+(st==="満席"?" soldout":""),style:"cursor:default"+(ok?"":";opacity:.75")},kids);
       }))
     ]);
   }));
